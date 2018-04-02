@@ -101,13 +101,12 @@ straightfoward: simply run `msbuild` in `src/`, or use your favorite IDE.
 The project structure looks like so:
 
     ├───doc
-    ├───src
-    │   ├───schemy              // the core schemy interpreter (schemy.dll)
-    │   ├───examples
-    │   │   ├───command_server  // loading command handlers from schemy scripts
-    │   │   └───repl            // an interactive interpreter (REPL)
-    │   └───test
-    └───tools
+    └───src
+        ├───schemy              // the core schemy interpreter (schemy.dll)
+        ├───examples
+        │   ├───command_server  // loading command handlers from schemy scripts
+        │   └───repl            // an interactive interpreter (REPL)
+        └───test
 
 
 ## Embedding and Extending Schemy
