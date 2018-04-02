@@ -32,6 +32,23 @@ A simple example is the [`say-hi.ss`](say-hi.ss) script:
 As a complex example, [`man.ss`](man.ss) defines a online man-page lookup:
 
 ```scheme
+; This script will be load by the server as command `man`. The command
+; is consistent of the following functions chained together:
+;
+; 1.  An online man-page look up - it detects the current operating system and 
+;     decides to use either a linux or freebsd man page web API for the look up.
+; 
+; 2.  A string truncator `truncate-string` - it truncates the input string, in
+;     this case the output of the man-page lookup, to the specified number of
+;     characters.
+; 
+; The client of the command server connects via raw RCP protocol, and can issue
+; commands like:
+; 
+;     man ls
+; 
+; and gets response of the truncated corresponding online manpage content.
+
 (define EXECUTE
   (let ((os (get-current-os))
         (max-length 500))
