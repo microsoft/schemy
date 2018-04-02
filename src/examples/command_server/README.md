@@ -55,8 +55,8 @@ As a complex example, [`man.ss`](man.ss) defines a online man-page lookup:
     (chain                                      ; chain functions together
       (cond                                     ; pick a manpage lookup based on OS
         ((equal? os "freebsd") (man-freebsd))
-        ((equal? os "linux") (man-linux))
-        (else (man-freebsd)))
+        ((equal? os "linux")   (man-linux))
+        (else                  (man-freebsd)))
       (truncate-string max-length))))           ; truncate output string to a max length
 ```
 
