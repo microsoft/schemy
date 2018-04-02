@@ -84,20 +84,15 @@ Schemy can be seen as sitting in the middle of the spectrum:
 
 ## Usage
 
-Schemy is primarily designed to be embedded into a .NET application for
-configuration or as a [shell-like interactive environment (REPL)](#repl). To
-use Schemy, you can either:
-
-1.  Reference `schemy.dll`, or
-2.  Copy `src/schemy/*.cs` source code to include in your application. Since
-    Schemy code base is small. This approach is very feasible (don't forget to
-    also include the resource file `init.ss`).
-
-
 To reference `schemy.dll`, either install it via [Nuget
-(schemy)](schemy_nuget), or build it from source as described below.
+(schemy)][schemy_nuget], or [build it from source](#build).
+
+Alternatively, you can just copy `src/schemy/*.cs` source code to include in
+your application. Since Schemy code base is small. This approach is very
+feasible (don't forget to also include the resource file `init.ss`).
 
 
+<a id="build" />
 ## Build
 
 Schemy does not take any external dependency. So building it should be
