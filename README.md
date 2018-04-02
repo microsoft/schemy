@@ -82,10 +82,26 @@ Schemy can be seen as sitting in the middle of the spectrum:
     file system](#virtualfs).)
 
 
+## Usage
+
+Schemy is primarily designed to be embedded into a .NET application for
+configuration or as a [shell-like interactive environment (REPL)](#repl). To
+use Schemy, you can either:
+
+1.  Reference `schemy.dll`, or
+2.  Copy `src/schemy/*.cs` source code to include in your application. Since
+    Schemy code base is small. This approach is very feasible (don't forget to
+    also include the resource file `init.ss`).
+
+
+To reference `schemy.dll`, either install it via [Nuget
+(schemy)](schemy_nuget), or build it from source as described below.
+
 
 ## Build
 
-Simply run `msbuild` in `src/`, or use your favorite IDE.
+Schemy does not take any external dependency. So building it should be
+straightfoward: simply run `msbuild` in `src/`, or use your favorite IDE.
 
 The project structure looks like so:
 
@@ -100,15 +116,6 @@ The project structure looks like so:
 
 
 ## Embedding and Extending Schemy
-
-Schemy is primarily designed to be embedded into a .NET application for
-configuration or as a [shell-like interactive environment (REPL)](#repl). To
-use Schemy, you can either:
-
-1.  Reference `schemy.dll`, or
-2.  Copy `src/schemy/*.cs` source code to include in your application. Since
-    Schemy code base is small. This approach is very feasible (don't forget to
-    also include the resource file `init.ss`).
 
 
 The below sections describes how to embed and extend Schemy in .NET
@@ -315,5 +322,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 [schemepl]: http://www.scheme.com/tspl4/start.html#./start:h4
 [lispy]: http://norvig.com/lispy2.html
+[schemy_nuget]: https://www.nuget.org/packages/schemy
 <!--- vim: set ft=markdown tw=78: -->
 
