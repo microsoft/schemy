@@ -28,7 +28,7 @@ namespace Schemy
             this.fsAccessor = fsAccessor;
             if (this.fsAccessor == null)
             {
-                this.fsAccessor = new ReadOnlyFileSystemAccessor();
+                this.fsAccessor = new DisabledFileSystemAccessor();
             }
 
             // populate an empty environment for the initializer to potentially work with

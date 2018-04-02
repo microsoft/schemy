@@ -11,7 +11,7 @@ Its design goals are:
 * easy to embed and extend in .NET
 * extensible in Scheme via macro expansion
 * safe without the need of complicated AppDomain sandboxing. It's safe because
-  IO functions are not implemented.
+  IO functions are not exposed by default
 * runs reasonably fast and low memory footprint
 
 Non-goals:
@@ -26,12 +26,12 @@ interpreter][lispy], but is heavily adapted to .NET and engineered to be easily
 extensible and embeddable in .NET applications.
 
 
-## Scheme Features
+## Language Features
 
 It has most features that a language would support:
 
 * number, boolean, string, list types
-* varaible, function definition
+* variable, function definition
 * tail call optimization
 * macro definition
 * lexical scoping
@@ -41,6 +41,62 @@ Many Scheme features are not (yet) supported. Among those are:
 
 * continuation (`call/cc`)
 * use square brackets `[...]` in place of parenthesis `(...)`
+
+
+## Why Schemy
+
+Schemy was originally designed at Microsoft 365 to define complex machine
+learning model workflows that handle web API requests. Since Schemy scripts
+can be easier to develop, modify, and deploy than full fledged .NET
+application or modules, the development and maintenance become more agile, and
+concerns are better separated - request routing is handled by web server,
+request handling logics are defined by Schemy scripts. The
+[`command_server`](src/examples/command_server/) example application captures
+this design in a very simplified way.
+
+More generically, for applications that require reading configuration, the
+usual resort is to configuration languages like JSON, XML, YAML, etc. While
+they are simple and readable, they may not be suitable for more complex
+configuration tasks, when dynamic conditioning, modularization, reusability
+are desired. For example, when defining a computational graph whose components
+depend on some runtime conditions, and when the graph is desirable to be
+composed of reusable sub-graphs.
+
+The other end of the spectrum is to use full fledged scripting languages like
+Python (IronPhython), Lua (NLua), etc. While they are more flexible and
+powerful, footprint for embedding them can be heavy, and they pull in
+dependencies to the host application.
+
+Schemy can be seen as sitting in the middle of the spectrum:
+
+-   It provides more languages features for conditioning,
+    modularization/reusability (functions, scripts), customization (macro),
+    then simple configuration languages.
+
+-   It's simpler in implementation (~1500 lines of code) and doesn't pull in
+    extra dependencies and have a smaller footprint to the host application.
+
+-   It can be safer in the sense that it doesn't provide access to file system
+    by default. Although we run it in fully trusted environment, this could be
+    useful as it doesn't need to be sandboxed. (IO is supported by [virtual
+    file system](#virtualfs).)
+
+
+
+## Build
+
+Simply run `msbuild` in `src/`, or use your favorite IDE.
+
+The project structure looks like so:
+
+    ├───doc
+    ├───src
+    │   ├───schemy              // the core schemy interpreter (schemy.dll)
+    │   ├───examples
+    │   │   ├───command_server  // loading command handlers from schemy scripts
+    │   │   └───repl            // an interactive interpreter (REPL)
+    │   └───test
+    └───tools
 
 
 ## Embedding and Extending Schemy
@@ -68,13 +124,25 @@ must implement `ICallable`.
 
 An example procedure implementation:
 
-    new NativeProcedure(args => args, "list");
+```csharp
+new NativeProcedure(args => args, "list");
+```
 
 This implements the Scheme procedure `list`, which converts its arguments 
 into a list:
 
     schemy> (list 1 2 3 4)
     (1 2 3 4)
+
+
+`NativeProcedure` has convenient factory methods that handles input type
+checking and conversion, for example, `NativeProcedure.Create<double, double, bool>()`
+takes a `Func<double, double bool>` as the implementation, and handles the
+argument count checking (must be 2) and type conversion (`(double, double) -> bool`):
+
+```csharp
+builtins[Symbol.FromString("=")] = NativeProcedure.Create<double, double, bool>((x, y) => x == y, "=");
+```
 
 To "register" extensions, one can pass them to the `Interpreter`'s
 constructor:
@@ -151,7 +219,9 @@ The following macro implements the `let` form by using lambda invocation:
 ## Use Interactively (REPL)
 
 The interpreter can be run interactively, when given a `TextReader` for input
-and a `TextWriter` for output. 
+and a `TextWriter` for output. The flexibility of this interface means you can
+not only expose the REPL via stdin/stdout, but also any streamable channels,
+e.g., a socket, or web socket (please consider security!).
 
 ```csharp
 /// <summary>Starts the Read-Eval-Print loop</summary>
@@ -191,6 +261,40 @@ Run a script:
 
     $ schemy.repl.exe <some_file>
 
+
+
+<a id="virtualfs"></a>
+## Virtual File System
+
+The interpreter's constructor takes a `IFileSystemAccessor`:
+
+```csharp
+public interface IFileSystemAccessor
+{
+    /// <summary>
+    /// Opens the path for read
+    /// </summary>
+    /// <param name="path">The path</param>
+    /// <returns>the stream to read</returns>
+    Stream OpenRead(string path);
+
+    /// <summary>
+    /// Opens the path for write
+    /// </summary>
+    /// <param name="path">The path</param>
+    /// <returns>the stream to write</returns>
+    Stream OpenWrite(string path);
+}
+```
+
+There're two builtin implementations: a `DisabledFileSystemAccessor`, which
+blocks read/write, a `ReadOnlyFileSystemAccessor`, which provides readonly to
+local file system. The default behavior for an interpreter is
+`DisabledFileSystemAccessor`.
+
+In addition to them, you can implement your own file system accessors. For
+example, you could implement it to provide access into a Zip archive, treating
+each zip archive entry as a file in a file system.
 
 
 # Contributing

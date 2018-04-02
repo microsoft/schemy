@@ -32,10 +32,22 @@ namespace Schemy
         Stream OpenWrite(string path);
     }
 
-    /// <summary>
-    /// An implementation of <see cref="IFileSystemAccessor"/> that grants readonly access to the host file system.
-    /// </summary>
-    /// <seealso cref="Schemy.IFileSystemAccessor" />
+    /// <summary>An implementation of <see cref="IFileSystemAccessor"/> that blocks read/write.</summary>
+    /// <remarks>This is the default behavior for an interpreter.</remarks>
+    public class DisabledFileSystemAccessor : IFileSystemAccessor
+    {
+        public Stream OpenRead(string path)
+        {
+            throw new InvalidOperationException("File system access is blocked by DisabledFileSystemAccessor");
+        }
+
+        public Stream OpenWrite(string path)
+        {
+            throw new InvalidOperationException("File system access is blocked by DisabledFileSystemAccessor");
+        }
+    }
+
+    /// <summary>An implementation of <see cref="IFileSystemAccessor"/> that grants readonly access to the host file system.</summary>
     public class ReadOnlyFileSystemAccessor : IFileSystemAccessor
     {
         public Stream OpenRead(string path)
@@ -49,4 +61,3 @@ namespace Schemy
         }
     }
 }
-

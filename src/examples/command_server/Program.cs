@@ -31,7 +31,7 @@ namespace Examples.command_server
                 { Symbol.FromString("truncate-string"), NativeProcedure.Create<int, Function>(len => input => ((string)input).Substring(0, len)) },
             };
 
-            var interpreter = new Interpreter(new[] { extension });
+            var interpreter = new Interpreter(new[] { extension }, new ReadOnlyFileSystemAccessor());
 
             if (args.Contains("--repl")) // start the REPL with all implemented functions
             {

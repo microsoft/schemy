@@ -14,7 +14,7 @@ namespace Schemy
             {
                 // evaluate input file's content
                 var file = args[0];
-                var interpreter = new Interpreter();
+                var interpreter = new Interpreter(null, new ReadOnlyFileSystemAccessor());
 
                 using (TextReader reader = new StreamReader(file))
                 {
@@ -25,7 +25,7 @@ namespace Schemy
             else
             {
                 // starts the REPL
-                var interpreter = new Interpreter();
+                var interpreter = new Interpreter(null, new ReadOnlyFileSystemAccessor());
                 var headers = new[]
                 {
                     "-----------------------------------------------",

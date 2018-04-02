@@ -45,9 +45,6 @@ namespace Schemy
             builtins[Symbol.CONS] = NativeProcedure.Create<object, List<object>, List<object>>((x, ys) => Enumerable.Concat(new[] { x }, ys).ToList(), "cons");
             builtins[Symbol.FromString("not")] = NativeProcedure.Create<bool, bool>(x => !x, "not");
             builtins[Symbol.APPEND] = NativeProcedure.Create<List<object>, List<object>, List<object>>((l1, l2) => Enumerable.Concat(l1, l2).ToList(), "append");
-            builtins[Symbol.FromString("null?")] = NativeProcedure.Create<object, bool>(x => x is List<object> && ((List<object>)x).Count == 0, "null?");
-            builtins[Symbol.FromString("assert")] = new NativeProcedure(AssertImpl, "assert");
-            builtins[Symbol.FromString("load")] = NativeProcedure.Create<string, None>(filename => LoadImpl(interpreter, filename), "load");
             builtins[Symbol.FromString("null")] = NativeProcedure.Create<object>(() => (object)null, "null");
             builtins[Symbol.FromString("null?")] = NativeProcedure.Create<object, bool>(x => x is List<object> && ((List<object>)x).Count == 0, "null?");
             builtins[Symbol.FromString("assert")] = new NativeProcedure(AssertImpl, "assert");
