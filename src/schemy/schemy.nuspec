@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Microsoft</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/Microsoft/schemy/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Microsoft/schemy</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+  </metadata>
+</package>
