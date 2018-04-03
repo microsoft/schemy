@@ -92,7 +92,7 @@ your application. Since Schemy code base is small. This approach is very
 feasible (don't forget to also include the resource file `init.ss`).
 
 
-<a id="build" />
+<a id="build"></a>
 ## Build
 
 Schemy does not take any external dependency. So building it should be
