@@ -51,13 +51,13 @@ namespace Schemy
 
         private IEnumerable<TextReader> GetInitializeFiles()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("init.ss"))
+            using (Stream stream = typeof(Interpreter).Assembly.GetManifestResourceStream("init.ss"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 yield return reader;
             }
 
-            string initFile = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), ".init.ss");
+            string initFile = Path.Combine(Path.GetDirectoryName(typeof(Interpreter).Assembly.Location), ".init.ss");
             if (File.Exists(initFile))
             {
                 using (var reader = new StreamReader(initFile))
