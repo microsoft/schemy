@@ -51,13 +51,13 @@ namespace Schemy
 
         private IEnumerable<TextReader> GetInitializeFiles()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("init.ss"))
+            using (Stream stream = typeof(Interpreter).Assembly.GetManifestResourceStream("init.ss"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 yield return reader;
             }
 
-            string initFile = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), ".init.ss");
+            string initFile = Path.Combine(Path.GetDirectoryName(typeof(Interpreter).Assembly.Location), ".init.ss");
             if (File.Exists(initFile))
             {
                 using (var reader = new StreamReader(initFile))
@@ -259,18 +259,17 @@ namespace Schemy
                     Symbol def = (Symbol)xs[0];
                     object v = xs[1]; // sym or (sym+)
                     List<object> body = xs.Skip(2).ToList(); // expr or expr+
-                    if (v is List<object>)
+                    if (v is List<object>) // defining function: ([define|define-macro] (f arg ...) body)
                     {
-                        // (define (f args) body)
                         var args = (List<object>)v;
                         Utils.CheckSyntax(xs, args.Count > 0);
                         var f = args[0];
                         var @params = args.Skip(1).ToList();
                         return expand(new List<object> { def, f, Enumerable.Concat(new object[] { Symbol.LAMBDA, @params }, body).ToList() }, false);
                     }
-                    else
+                    else // defining variable: ([define|define-macro] id expr)
                     {
-                        Utils.CheckSyntax(xs, xs.Count == 3); // (define x expr)
+                        Utils.CheckSyntax(xs, xs.Count == 3);
                         Utils.CheckSyntax(xs, v is Symbol);
                         var expr = expand(xs[2], false);
                         if (Symbol.DEFINE_MACRO.Equals(def))
@@ -385,6 +384,9 @@ namespace Schemy
                     }
                     else if (Symbol.LAMBDA.Equals(exprList[0]))
                     {
+                        // Two lambda forms:
+                        // -    (lambda (arg ...) body): each arg is bound to a value
+                        // -    (lambda args body): args is bound to the parameter list
                         Union<Symbol, List<Symbol>> parameters;
                         if (exprList[1] is Symbol)
                         {
