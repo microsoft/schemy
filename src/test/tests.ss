@@ -114,6 +114,25 @@
       (* a b)))
   (assert (= 20 x)))
 
+(define (test-call/cc)
+  ; test call/cc
+  (assert 
+   (= 20 
+      (call/cc 
+       (lambda (k)
+        (* 5 4)))))
+  (assert
+   (= 4
+      (call/cc
+        (lambda (k)
+          (* 5 (k 4))))))
+  (assert
+   (= 6
+      (+ 2 (call/cc
+            (lambda (k)
+              (* 5 (k 4))))))))
+
+  
 
 ;; =========
 ;; RUN TESTS
@@ -132,7 +151,7 @@
 (test-list)
 (test-syntax)
 (test-macro)
-
+(test-call/cc)
 
 ;; =======================
 ;; Interpreter integration
