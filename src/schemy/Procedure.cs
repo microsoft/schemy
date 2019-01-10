@@ -121,8 +121,8 @@ namespace Schemy
                     Utils.ConvertType<T5>(args[4]),
                     Utils.ConvertType<T6>(args[5]),
                     Utils.ConvertType<T7>(args[6]),
-                    Utils.ConvertType<T7>(args[7]),
-                    Utils.ConvertType<T7>(args[8])
+                    Utils.ConvertType<T8>(args[7]),
+                    Utils.ConvertType<T9>(args[8])
                     );
             }, name);
         }
@@ -145,7 +145,7 @@ namespace Schemy
                     Utils.ConvertType<T5>(args[4]),
                     Utils.ConvertType<T6>(args[5]),
                     Utils.ConvertType<T7>(args[6]),
-                    Utils.ConvertType<T7>(args[7])
+                    Utils.ConvertType<T8>(args[7])
                     );
             }, name);
         }
@@ -258,7 +258,9 @@ namespace Schemy
             return new NativeProcedure(args =>
             {
                 Utils.CheckArity(args, 2);
-                return func(Utils.ConvertType<T1>(args[0]), Utils.ConvertType<T2>(args[1]));
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]));
             }, name);
         }
 
@@ -275,7 +277,9 @@ namespace Schemy
             return new NativeProcedure(args =>
             {
                 Utils.CheckArity(args, 1);
-                return func(Utils.ConvertType<T1>(args[0]));
+                return func(
+                    Utils.ConvertType<T1>(args[0])
+                );
             }, name);
         }
 
