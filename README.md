@@ -39,7 +39,6 @@ It has most features that a language would support:
 
 Many Scheme features are not (yet) supported. Among those are:
 
-* continuation (`call/cc`)
 * use square brackets `[...]` in place of parenthesis `(...)`
 
 
