@@ -15,41 +15,45 @@ namespace Schemy
     {
         public static IDictionary<Symbol, object> CreateBuiltins(Interpreter interpreter)
         {
-            var builtins = new Dictionary<Symbol, object>();
+            var builtins = new Dictionary<Symbol, object>()
+            {
 
-            builtins[Symbol.FromString("+")] = new NativeProcedure(Utils.MakeVariadic(Add), "+");
-            builtins[Symbol.FromString("-")] = new NativeProcedure(Utils.MakeVariadic(Minus), "-");
-            builtins[Symbol.FromString("*")] = new NativeProcedure(Utils.MakeVariadic(Multiply), "*");
-            builtins[Symbol.FromString("/")] = new NativeProcedure(Utils.MakeVariadic(Divide), "/");
-            builtins[Symbol.FromString("=")] = NativeProcedure.Create<double, double, bool>((x, y) => x == y, "=");
-            builtins[Symbol.FromString("<")] = NativeProcedure.Create<double, double, bool>((x, y) => x < y, "<");
-            builtins[Symbol.FromString("<=")] = NativeProcedure.Create<double, double, bool>((x, y) => x <= y, "<=");
-            builtins[Symbol.FromString(">")] = NativeProcedure.Create<double, double, bool>((x, y) => x > y, ">");
-            builtins[Symbol.FromString(">=")] = NativeProcedure.Create<double, double, bool>((x, y) => x >= y, ">=");
-            builtins[Symbol.FromString("eq?")] = NativeProcedure.Create<object, object, bool>((x, y) => object.ReferenceEquals(x, y), "eq?");
-            builtins[Symbol.FromString("equal?")] = NativeProcedure.Create<object, object, bool>(EqualImpl, "equal?");
-            builtins[Symbol.FromString("boolean?")] = NativeProcedure.Create<object, bool>(x => x is bool, "boolean?");
-            builtins[Symbol.FromString("num?")] = NativeProcedure.Create<object, bool>(x => x is int || x is double, "num?");
-            builtins[Symbol.FromString("string?")] = NativeProcedure.Create<object, bool>(x => x is string, "string?");
-            builtins[Symbol.FromString("symbol?")] = NativeProcedure.Create<object, bool>(x => x is Symbol, "symbol?");
-            builtins[Symbol.FromString("list?")] = NativeProcedure.Create<object, bool>(x => x is List<object>, "list?");
-            builtins[Symbol.FromString("map")] = NativeProcedure.Create<ICallable, List<object>, List<object>>((func, ls) => ls.Select(x => func.Call(new List<object> { x })).ToList());
-            builtins[Symbol.FromString("reverse")] = NativeProcedure.Create<List<object>, List<object>>(ls => ls.Reverse<object>().ToList());
-            builtins[Symbol.FromString("range")] = new NativeProcedure(RangeImpl, "range");
-            builtins[Symbol.FromString("apply")] = NativeProcedure.Create<ICallable, List<object>, object>((proc, args) => proc.Call(args), "apply");
-            builtins[Symbol.FromString("list")] = new NativeProcedure(args => args, "list");
-            builtins[Symbol.FromString("list-ref")] = NativeProcedure.Create<List<object>, int, object>((ls, idx) => ls[idx]);
-            builtins[Symbol.FromString("length")] = NativeProcedure.Create<List<object>, int>(list => list.Count, "length");
-            builtins[Symbol.FromString("car")] = NativeProcedure.Create<List<object>, object>(args => args[0], "car");
-            builtins[Symbol.FromString("cdr")] = NativeProcedure.Create<List<object>, List<object>>(args => args.Skip(1).ToList(), "cdr");
-            builtins[Symbol.CONS] = NativeProcedure.Create<object, List<object>, List<object>>((x, ys) => Enumerable.Concat(new[] { x }, ys).ToList(), "cons");
-            builtins[Symbol.FromString("not")] = NativeProcedure.Create<bool, bool>(x => !x, "not");
-            builtins[Symbol.APPEND] = NativeProcedure.Create<List<object>, List<object>, List<object>>((l1, l2) => Enumerable.Concat(l1, l2).ToList(), "append");
-            builtins[Symbol.FromString("null")] = NativeProcedure.Create<object>(() => (object)null, "null");
-            builtins[Symbol.FromString("null?")] = NativeProcedure.Create<object, bool>(x => x is List<object> && ((List<object>)x).Count == 0, "null?");
-            builtins[Symbol.FromString("assert")] = new NativeProcedure(AssertImpl, "assert");
-            builtins[Symbol.FromString("load")] = NativeProcedure.Create<string, None>(filename => LoadImpl(interpreter, filename), "load");
-			builtins[Symbol.FromString("call/cc")] = NativeProcedure.Create<ICallable, object>(Continuation.CallWithCurrentContinuation, "call/cc");
+                [Symbol.FromString("+")] = new NativeProcedure(Utils.MakeVariadic(Add), "+"),
+                [Symbol.FromString("-")] = new NativeProcedure(Utils.MakeVariadic(Minus), "-"),
+                [Symbol.FromString("*")] = new NativeProcedure(Utils.MakeVariadic(Multiply), "*"),
+                [Symbol.FromString("/")] = new NativeProcedure(Utils.MakeVariadic(Divide), "/"),
+                [Symbol.FromString("=")] = NativeProcedure.Create<double, double, bool>((x, y) => x == y, "="),
+                [Symbol.FromString("<")] = NativeProcedure.Create<double, double, bool>((x, y) => x < y, "<"),
+                [Symbol.FromString("<=")] = NativeProcedure.Create<double, double, bool>((x, y) => x <= y, "<="),
+                [Symbol.FromString(">")] = NativeProcedure.Create<double, double, bool>((x, y) => x > y, ">"),
+                [Symbol.FromString(">=")] = NativeProcedure.Create<double, double, bool>((x, y) => x >= y, ">="),
+                [Symbol.FromString("eq?")] = NativeProcedure.Create<object, object, bool>((x, y) => object.ReferenceEquals(x, y), "eq?"),
+                [Symbol.FromString("equal?")] = NativeProcedure.Create<object, object, bool>(EqualImpl, "equal?"),
+                [Symbol.FromString("boolean?")] = NativeProcedure.Create<object, bool>(x => x is bool, "boolean?"),
+                [Symbol.FromString("num?")] = NativeProcedure.Create<object, bool>(x => x is int || x is double, "num?"),
+                [Symbol.FromString("string?")] = NativeProcedure.Create<object, bool>(x => x is string, "string?"),
+                [Symbol.FromString("symbol?")] = NativeProcedure.Create<object, bool>(x => x is Symbol, "symbol?"),
+                [Symbol.FromString("procedure?")] = NativeProcedure.Create<object, bool>(x => x is Procedure || x is NativeProcedure, "procedure?"),
+                [Symbol.FromString("list?")] = NativeProcedure.Create<object, bool>(x => x is List<object>, "list?"),
+                [Symbol.FromString("map")] = NativeProcedure.Create<ICallable, List<object>, List<object>>((func, ls) => ls.Select(x => func.Call(new List<object> { x })).ToList()),
+                [Symbol.FromString("reverse")] = NativeProcedure.Create<List<object>, List<object>>(ls => ls.Reverse<object>().ToList()),
+                [Symbol.FromString("range")] = new NativeProcedure(RangeImpl, "range"),
+                [Symbol.FromString("apply")] = NativeProcedure.Create<ICallable, List<object>, object>((proc, args) => proc.Call(args), "apply"),
+                [Symbol.FromString("list")] = new NativeProcedure(args => args, "list"),
+                [Symbol.FromString("list-ref")] = NativeProcedure.Create<List<object>, int, object>((ls, idx) => ls[idx]),
+                [Symbol.FromString("length")] = NativeProcedure.Create<List<object>, int>(list => list.Count, "length"),
+                [Symbol.FromString("car")] = NativeProcedure.Create<List<object>, object>(args => args[0], "car"),
+                [Symbol.FromString("cdr")] = NativeProcedure.Create<List<object>, List<object>>(args => args.Skip(1).ToList(), "cdr"),
+                [Symbol.CONS] = NativeProcedure.Create<object, List<object>, List<object>>((x, ys) => Enumerable.Concat(new[] { x }, ys).ToList(), "cons"),
+                [Symbol.FromString("not")] = NativeProcedure.Create<bool, bool>(x => !x, "not"),
+                [Symbol.APPEND] = NativeProcedure.Create<List<object>, List<object>, List<object>>((l1, l2) => Enumerable.Concat(l1, l2).ToList(), "append"),
+                [Symbol.FromString("null")] = NativeProcedure.Create<object>(() => (object)null, "null"),
+                [Symbol.FromString("null?")] = NativeProcedure.Create<object, bool>(x => x is List<object> && ((List<object>)x).Count == 0, "null?"),
+                [Symbol.FromString("assert")] = new NativeProcedure(AssertImpl, "assert"),
+                [Symbol.FromString("load")] = NativeProcedure.Create<string, None>(filename => LoadImpl(interpreter, filename), "load"),
+                [Symbol.FromString("call/cc")] = NativeProcedure.Create<ICallable, object>(Continuation.CallWithCurrentContinuation, "call/cc")
+
+            };
 
             return builtins;
         }
