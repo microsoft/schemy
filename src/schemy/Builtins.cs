@@ -33,7 +33,7 @@ namespace Schemy
                 [Symbol.FromString("num?")] = NativeProcedure.Create<object, bool>(x => x is int || x is double, "num?"),
                 [Symbol.FromString("string?")] = NativeProcedure.Create<object, bool>(x => x is string, "string?"),
                 [Symbol.FromString("symbol?")] = NativeProcedure.Create<object, bool>(x => x is Symbol, "symbol?"),
-                [Symbol.FromString("procedure?")] = NativeProcedure.Create<object, bool>(x => x is Procedure || x is NativeProcedure, "procedure?"),
+                [Symbol.FromString("procedure?")] = NativeProcedure.Create<object, bool>(x => x is ICallable, "procedure?"),
                 [Symbol.FromString("list?")] = NativeProcedure.Create<object, bool>(x => x is List<object>, "list?"),
                 [Symbol.FromString("map")] = NativeProcedure.Create<ICallable, List<object>, List<object>>((func, ls) => ls.Select(x => func.Call(new List<object> { x })).ToList()),
                 [Symbol.FromString("reverse")] = NativeProcedure.Create<List<object>, List<object>>(ls => ls.Reverse<object>().ToList()),
