@@ -102,6 +102,54 @@ namespace Schemy
             return this.func(args);
         }
 
+
+        /// <summary>
+        /// Convenient function method to create a native procedure and doing arity and type check for inputs. It makes the input function
+        /// implementation strongly typed.
+        /// </summary>
+        /// <see cref="Create{T1, T2}(Func{T1, T2}, string)"/>
+        public static NativeProcedure Create<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> func, string name = null)
+        {
+            return new NativeProcedure(args =>
+            {
+                Utils.CheckArity(args, 9);
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]),
+                    Utils.ConvertType<T3>(args[2]),
+                    Utils.ConvertType<T4>(args[3]),
+                    Utils.ConvertType<T5>(args[4]),
+                    Utils.ConvertType<T6>(args[5]),
+                    Utils.ConvertType<T7>(args[6]),
+                    Utils.ConvertType<T8>(args[7]),
+                    Utils.ConvertType<T9>(args[8])
+                    );
+            }, name);
+        }
+
+        /// <summary>
+        /// Convenient function method to create a native procedure and doing arity and type check for inputs. It makes the input function
+        /// implementation strongly typed.
+        /// </summary>
+        /// <see cref="Create{T1, T2}(Func{T1, T2}, string)"/>
+        public static NativeProcedure Create<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9> func, string name = null)
+        {
+            return new NativeProcedure(args =>
+            {
+                Utils.CheckArity(args, 8);
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]),
+                    Utils.ConvertType<T3>(args[2]),
+                    Utils.ConvertType<T4>(args[3]),
+                    Utils.ConvertType<T5>(args[4]),
+                    Utils.ConvertType<T6>(args[5]),
+                    Utils.ConvertType<T7>(args[6]),
+                    Utils.ConvertType<T8>(args[7])
+                    );
+            }, name);
+        }
+
         /// <summary>
         /// Convenient function method to create a native procedure and doing arity and type check for inputs. It makes the input function
         /// implementation strongly typed.
@@ -120,6 +168,47 @@ namespace Schemy
                     Utils.ConvertType<T5>(args[4]),
                     Utils.ConvertType<T6>(args[5]),
                     Utils.ConvertType<T7>(args[6])
+                    );
+            }, name);
+        }
+
+        /// <summary>
+        /// Convenient function method to create a native procedure and doing arity and type check for inputs. It makes the input function
+        /// implementation strongly typed.
+        /// </summary>
+        /// <see cref="Create{T1, T2}(Func{T1, T2}, string)"/>
+        public static NativeProcedure Create<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7> func, string name = null)
+        {
+            return new NativeProcedure(args =>
+            {
+                Utils.CheckArity(args, 6);
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]),
+                    Utils.ConvertType<T3>(args[2]),
+                    Utils.ConvertType<T4>(args[3]),
+                    Utils.ConvertType<T5>(args[4]),
+                    Utils.ConvertType<T6>(args[5])
+                    );
+            }, name);
+        }
+
+        /// <summary>
+        /// Convenient function method to create a native procedure and doing arity and type check for inputs. It makes the input function
+        /// implementation strongly typed.
+        /// </summary>
+        /// <see cref="Create{T1, T2}(Func{T1, T2}, string)"/>
+        public static NativeProcedure Create<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6> func, string name = null)
+        {
+            return new NativeProcedure(args =>
+            {
+                Utils.CheckArity(args, 5);
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]),
+                    Utils.ConvertType<T3>(args[2]),
+                    Utils.ConvertType<T4>(args[3]),
+                    Utils.ConvertType<T5>(args[4])
                     );
             }, name);
         }
@@ -169,7 +258,9 @@ namespace Schemy
             return new NativeProcedure(args =>
             {
                 Utils.CheckArity(args, 2);
-                return func(Utils.ConvertType<T1>(args[0]), Utils.ConvertType<T2>(args[1]));
+                return func(
+                    Utils.ConvertType<T1>(args[0]),
+                    Utils.ConvertType<T2>(args[1]));
             }, name);
         }
 
@@ -186,7 +277,9 @@ namespace Schemy
             return new NativeProcedure(args =>
             {
                 Utils.CheckArity(args, 1);
-                return func(Utils.ConvertType<T1>(args[0]));
+                return func(
+                    Utils.ConvertType<T1>(args[0])
+                );
             }, name);
         }
 
