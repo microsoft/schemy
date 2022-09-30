@@ -49,6 +49,7 @@ namespace Schemy
             builtins[Symbol.FromString("null?")] = NativeProcedure.Create<object, bool>(x => x is List<object> && ((List<object>)x).Count == 0, "null?");
             builtins[Symbol.FromString("assert")] = new NativeProcedure(AssertImpl, "assert");
             builtins[Symbol.FromString("load")] = NativeProcedure.Create<string, None>(filename => LoadImpl(interpreter, filename), "load");
+			builtins[Symbol.FromString("call/cc")] = NativeProcedure.Create<ICallable, object>(Continuation.CallWithCurrentContinuation, "call/cc");
 
             return builtins;
         }

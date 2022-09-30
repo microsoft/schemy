@@ -56,6 +56,7 @@
     <Compile Include="Symbol.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="init.ss"><LogicalName>init.ss</LogicalName></EmbeddedResource>
+    <Compile Include="Continuation.cs" />
   </ItemGroup>
   
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
